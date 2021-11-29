@@ -1,0 +1,7 @@
+npm i express consola jsonwebtoken passport passport-jwt cors dotenv mongoose
+npm i -D nodemon
+//create proper folder structures middleware, config, models, routes
+//create new file in config index.js, add a require('dotenv'); and export env 
+//create the env file and add info
+//create or copy a .gitignore
+//continue editing main index.js
