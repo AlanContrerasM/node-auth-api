@@ -14,6 +14,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+//1. add router middleware
+app.use('/api/users', require('./routes/users'));
+
 const startApp = async () => {
 
     try{
