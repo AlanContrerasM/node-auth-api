@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 
 const {SECRET} =require('../config');
 
+//3.add passport
+const passport = require('passport');
+
 // @DESC To register the user
 const userRegister = async (userDets, role, res) => {
     try {
@@ -88,10 +91,16 @@ const userLogin = async (userCreds, role, res) =>{
             username: user.username,
             role: user.role, 
             email: user.email,
-            token: `Bearer ${token}`, 
+            // token: `Bearer ${token}`, 
             expiresIn: 168
 
         }
+
+        res.cookie("refreshToken", token, {
+            // secure: true,
+            httpOnly: true,
+            sameSite: "strict",
+        });
 
         return res.status(200).json({
             ...result,
@@ -118,8 +127,32 @@ const validateEmail = async email =>{
     let user = await User.findOne({email});
     return user ? true : false;
 }
+//@DESC check role middleware
+const checkRole = roles  => (req,res,next)=> roles.includes(req.user.role) 
+    ? next() 
+    : res.satus(401).json({ message: "Invalid permissions", success: false });
+
+
+//3. and add it to the exports
+//@DESC Passport middleware
+const userAuth = passport.authenticate('jwt', {session:false});
+
+//this is to protect password, for when we send response back to user after authenticating.
+const serializeUser = user => {
+    return {
+        username: user.username,
+        email: user.email,
+        _id: user._id,
+        name: user.name,
+        updatedAt: user.updatedAt,
+        createdAt: user.createdAt
+    }
+}
 
 module.exports = {
     userRegister,
-    userLogin
+    userLogin,
+    userAuth,
+    serializeUser,
+    checkRole
 }

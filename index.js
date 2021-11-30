@@ -1,7 +1,10 @@
 const cors = require('cors');
 const express = require('express');
+const cookieParser = require("cookie-parser");
 const {success, error} = require('consola');
 const {connect} = require('mongoose');
+//2. passport stuff
+const passport = require('passport');
 
 //bring in app constant
 const {DB, PORT} = require('./config');
@@ -13,6 +16,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(cookieParser());
+//2. passport stuff
+app.use(passport.initialize());
+
+require('./middlewares/passport')(passport);
+
 
 //1. add router middleware
 app.use('/api/users', require('./routes/users'));

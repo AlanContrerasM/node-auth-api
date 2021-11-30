@@ -1,6 +1,6 @@
 const router = require('express').Router();
 //Bring in the user registration function
-const {userRegister, userLogin} = require('../utils/Auth');
+const {userRegister, userLogin, userAuth, serializeUser, checkRole} = require('../utils/Auth');
 
 
 //users Registration route
@@ -36,12 +36,36 @@ router.post('/login-superadmin', async(req, res) => {
 
 
 //profile route
-router.get('profile', async(req, res) => {});
+//user has to send in headers, Authorization as a key, and the token as value
+router.get('/profile', userAuth,  async(req, res) => {
+    return res.json(serializeUser(req.user));
+});
 
 //users protected route
-router.post('/user-profile', async(req, res) => {})
+router.get('/user-profile',userAuth, checkRole(['users']), async(req, res) => {
+    return res.json(serializeUser(req.user));
+});
 //Admin protected route
-router.post('/admin-profile', async(req, res) => {})
+router.get('/admin-profile', checkRole(['admin']),  async(req, res) => {
+    return res.json(serializeUser(req.user));
+});
 //SuperAdmin protected route
-router.post('/superadmin-profile', async(req, res) => {})
+router.get('/superadmin-profile',userAuth, checkRole(['superadmin']), async(req, res) => {
+    return res.json(serializeUser(req.user));
+});
+
+//SuperAdmin protected route
+router.get('/superadmin-admin-profile',userAuth, checkRole(['superadmin', 'admin']), async(req, res) => {
+    return res.json(serializeUser(req.user));
+});
+
+router.get('/logout', async(req,res)=>{
+    res.clearCookie('refreshToken');
+    res.json({
+        message: "Logged out",
+        success: true
+    })
+});
+
+
 module.exports = router;
