@@ -1,8 +1,33 @@
 const Event = require('../models/Event');
 
 // Create and Save a new Tutorial
-exports.create = (req, res) => {
-  
+exports.create = async (req, res) => {
+
+    try{
+        // const {first_name, last_name, age} = req.body;
+
+        
+        const newEvent = new Event({
+            title: "Project X",
+            description:"best party ever",
+            creator: "61a8729c29c217000f0f9155",
+            coordinates: [4.144444,5,444445],
+            category: "personal"
+        });
+
+        await newEvent.save();
+        return res.status(201).json({
+            message: "Event was created",
+            success: true
+        });
+
+
+    }catch(err){
+        console.log(err);
+        res.status(400).send({err, message: "wrong data sent to create new event"});
+
+    }
+    
 };
 
 // Retrieve all Tutorials from the database.
