@@ -84,7 +84,7 @@ const userLogin = async (userCreds, role, res) =>{
                 email: user.email
             }, 
             SECRET, 
-            {expiresIn: 20} //can be "7 days", "7d", "24h", or just numebr for seconds
+            {expiresIn: "7d"} //can be "7 days", "7d", "24h", or just numebr for seconds
         );
 
         let result = {
