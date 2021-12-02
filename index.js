@@ -24,7 +24,9 @@ require('./middlewares/passport')(passport);
 
 
 //1. add router middleware
-app.use('/api/users', require('./routes/users'));
+app.use('/api/v1/users', require('./routes/users'));
+
+app.use('/api/v1/events', require('./routes/events'));
 
 const startApp = async () => {
 

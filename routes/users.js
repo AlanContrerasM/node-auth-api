@@ -21,16 +21,16 @@ router.post('/register-superadmin', async(req, res) => {
 })
 
 
-//users login route
+//users login route, user user
 router.post('/login-user', async(req, res) => {
     await userLogin(req.body, 'user', res);
 })
 //body containing username and password. could change for email if wanted.
-//Admin login route
+//Admin login route admin admin
 router.post('/login-admin', async(req, res) => {
     await userLogin(req.body, 'admin', res);
 })
-//SuperAdmin login route
+//SuperAdmin login route superadmin superadmin
 router.post('/login-superadmin', async(req, res) => {
     await userLogin(req.body, 'superadmin', res);
 })
@@ -43,20 +43,20 @@ router.get('/profile', userAuth, async(req, res) => {
 });
 
 //users protected route
-router.get('/user-profile',userAuth, checkRole(['users']), async(req, res) => {
+router.get('/user-profile', userAuth, checkRole(['user']), async(req, res) => {
     return res.json(serializeUser(req.user));
 });
 //Admin protected route
-router.get('/admin-profile', checkRole(['admin']),  async(req, res) => {
+router.get('/admin-profile', userAuth, checkRole(['admin']),  async(req, res) => {
     return res.json(serializeUser(req.user));
 });
 //SuperAdmin protected route
-router.get('/superadmin-profile',userAuth, checkRole(['superadmin']), async(req, res) => {
+router.get('/superadmin-profile', userAuth, checkRole(['superadmin']), async(req, res) => {
     return res.json(serializeUser(req.user));
 });
 
 //SuperAdmin protected route
-router.get('/superadmin-admin-profile',userAuth, checkRole(['superadmin', 'admin']), async(req, res) => {
+router.get('/superadmin-admin-profile', userAuth, checkRole(['superadmin', 'admin']), async(req, res) => {
     return res.json(serializeUser(req.user));
 });
 

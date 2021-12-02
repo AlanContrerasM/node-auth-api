@@ -130,7 +130,7 @@ const validateEmail = async email =>{
 //@DESC check role middleware
 const checkRole = roles  => (req,res,next)=> roles.includes(req.user.role) 
     ? next() 
-    : res.satus(401).json({ message: "Invalid permissions", success: false });
+    : res.status(401).json({ message: "Invalid permissions", success: false });
 
 
 //3. and add it to the exports
