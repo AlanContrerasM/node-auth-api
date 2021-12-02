@@ -3,6 +3,7 @@ const router = require('express').Router();
 const {userRegister, userLogin, userAuth, serializeUser, checkRole} = require('../utils/Auth');
 
 
+
 //users Registration route
 router.post('/register-user', async(req, res) => {
     await userRegister(req.body, 'user', res);
@@ -37,7 +38,7 @@ router.post('/login-superadmin', async(req, res) => {
 
 //profile route
 //user has to send in headers, Authorization as a key, and the token as value
-router.get('/profile', userAuth,  async(req, res) => {
+router.get('/profile', userAuth, async(req, res) => {
     return res.json(serializeUser(req.user));
 });
 

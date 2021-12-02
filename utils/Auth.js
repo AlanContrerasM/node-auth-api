@@ -84,7 +84,7 @@ const userLogin = async (userCreds, role, res) =>{
                 email: user.email
             }, 
             SECRET, 
-            {expiresIn: "7 days"}
+            {expiresIn: 20} //can be "7 days", "7d", "24h", or just numebr for seconds
         );
 
         let result = {
@@ -135,7 +135,18 @@ const checkRole = roles  => (req,res,next)=> roles.includes(req.user.role)
 
 //3. and add it to the exports
 //@DESC Passport middleware
-const userAuth = passport.authenticate('jwt', {session:false});
+const userAuth = (req,res,next) => passport.authenticate('jwt', {session:false}, function(err, user, info) {
+    if (err || !user ) { 
+        res.clearCookie('refreshToken');
+        res.status(401).send({
+            message: "authentication failed, please sign in again for new token",
+            success: false
+        });
+    }else{
+        req.user = user;
+        return next();
+    }
+  })(req, res, next);
 
 //this is to protect password, for when we send response back to user after authenticating.
 const serializeUser = user => {

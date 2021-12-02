@@ -11,7 +11,7 @@ const { Strategy, ExtractJwt} = require('passport-jwt');
 var cookieExtractor = function(req) {
     var token = null;
     if (req && req.cookies) token = req.cookies['refreshToken'];
-    console.log(token);
+    // console.log(token);
     return token;
   };
 
