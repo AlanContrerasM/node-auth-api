@@ -1,5 +1,17 @@
 const {Schema, model} = require('mongoose');
 
+const creatorSubSchema = new Schema({
+    _id:{
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+        required: true
+    },
+    username:{
+        type: String, 
+        required: true
+    }
+  });
+
 const EventSchema = new Schema({
     title: {
         type: String, 
@@ -10,8 +22,7 @@ const EventSchema = new Schema({
 
     },
     creator: {
-        type: Schema.Types.ObjectId,
-        ref: 'users',
+        type: creatorSubSchema,
         required: true
     },
     coordinates: {
